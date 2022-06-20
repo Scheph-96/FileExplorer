@@ -9,18 +9,21 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.TextField;
 
 /**
+ * FXML Controller class
  *
  * @author The_Me
  */
-public class HomeController implements Initializable {
+public class ExplorerTopSectionController implements Initializable {
     
     @FXML
-    private BorderPane borderPane;
-    
-    
+    TextField pathDisplayer;
+
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
