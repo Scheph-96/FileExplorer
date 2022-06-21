@@ -22,6 +22,7 @@ public class FileExplorer extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/com/file/explorer/view/Home.fxml"));
         
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("/com/file/explorer/style/style.css");
         
         stage.setScene(scene);
         stage.setResizable(false);

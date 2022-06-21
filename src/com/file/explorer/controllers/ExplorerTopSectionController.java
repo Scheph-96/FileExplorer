@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * FXML Controller class
@@ -20,13 +22,20 @@ public class ExplorerTopSectionController implements Initializable {
     
     @FXML
     TextField pathDisplayer;
+    
+    @FXML
+    ImageView leftArrow;
+    
+    @FXML
+    ImageView rightArrow;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        leftArrow.setImage(new Image("/com/file/explorer/images/arrow-left.png"));
+        rightArrow.setImage(new Image("/com/file/explorer/images/arrow-right.png"));
     }    
     
 }

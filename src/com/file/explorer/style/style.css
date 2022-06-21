@@ -1,0 +1,30 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 21 juin 2022, 12:22:01
+    Author     : The_Me
+*/
+
+AnchorPane {
+    -fx-background-color: #0b0909;
+    -fx-border-color: #4c4c4c;
+}
+
+
+TextField{
+    -fx-background-color: #4c4c4c;
+    -fx-text-fill: #d1d1d1;
+}
+
+
+TreeItem{
+    -fx-background-color: #0b0909;
+}
+
+
+/*.tree-cell{
+    -fx-background-color: #0b0909;
+}*/

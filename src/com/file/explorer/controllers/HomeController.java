@@ -5,10 +5,15 @@
  */
 package com.file.explorer.controllers;
 
+import com.file.explorer.services.FxmlLoader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 /**
@@ -20,10 +25,21 @@ public class HomeController implements Initializable {
     @FXML
     private BorderPane borderPane;
     
+    private AnchorPane pane;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        try {
+            pane = FxmlLoader.page("ExplorerTopSection");
+            borderPane.setTop(pane);
+            
+            pane = FxmlLoader.page("FoldersTreeView");
+            borderPane.setLeft(pane);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
     
 }
