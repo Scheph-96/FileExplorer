@@ -6,6 +6,14 @@
 package com.file.explorer.models;
 
 import com.file.explorer.enumerations.FileType;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,6 +24,7 @@ public class SubFile extends FileSystem {
     private FileType type;
     private Long size;
     private Long lastModified;
+    private ArrayList<SubFile> subFiles = new ArrayList();
 
     public SubFile() {
         super();
@@ -24,9 +33,23 @@ public class SubFile extends FileSystem {
     public SubFile(FileType type, Long size, Long lastModified, String name, String path) {
         super(name, path);
         this.type = type;
+        this.lastModified = lastModified;
         if (type == FileType.File) {
             this.size = size;
-            this.lastModified = lastModified;
+        } else {
+            File file = new File(path);
+            for (File child : file.listFiles()) {
+                if (child.isDirectory()) {
+                    try {
+                        subFiles.add(new SubFile(FileType.Folder,
+                                Files.size(Paths.get(child.getPath())),
+                                child.lastModified(), child.getName(),
+                                child.getAbsolutePath()));
+                    } catch (IOException ex) {
+                        Logger.getLogger(SubFile.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
         }
     }
 
