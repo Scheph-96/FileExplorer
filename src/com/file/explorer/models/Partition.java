@@ -5,7 +5,7 @@
  */
 package com.file.explorer.models;
 
-import java.io.File;
+import com.file.explorer.enumerations.FileSystemType;
 import java.util.List;
 /**
  *
@@ -20,6 +20,22 @@ public class Partition extends FileSystem{
 
     public Partition() {
         super();
+    }
+
+//    public Partition(String description, long totalSpace, long freeSpace, FileSystemType partitionType, List<SubFile> subFiles) {
+//        this.description = description;
+//        this.totalSpace = totalSpace;
+//        this.freeSpace = freeSpace;
+//        this.partitionType = partitionType;
+//        this.subFiles = subFiles;
+//    }
+
+    public Partition(String description, long totalSpace, long freeSpace, FileSystemType partitionType, List<SubFile> subFiles, String name, String path) {
+        super(name, path, partitionType);
+        this.description = description;
+        this.totalSpace = totalSpace;
+        this.freeSpace = freeSpace;
+        this.subFiles = subFiles;
     }
 
     public Partition(String description, long totalSpace, long freeSpace, List<SubFile> subFiles, String name, String path) {

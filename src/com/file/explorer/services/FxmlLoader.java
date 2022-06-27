@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -19,17 +20,17 @@ import javafx.scene.layout.AnchorPane;
  */
 public class FxmlLoader {
     
-    private static AnchorPane pane;
+    private static Node pane;
     
     
-    public static AnchorPane page(String filename) throws FileNotFoundException, IOException{
+    public static Node page(String filename) throws FileNotFoundException, IOException{
         URL filePath = FileExplorer.class.getResource("/com/file/explorer/view/"+filename+".fxml");
         
         if(filePath == null){
             throw new java.io.FileNotFoundException("Le fichier "+filename+" n'existe pas");
         }
         
-        pane = new FXMLLoader().load(filePath);
+        pane = FXMLLoader.load(filePath);
         
         return pane;
     }

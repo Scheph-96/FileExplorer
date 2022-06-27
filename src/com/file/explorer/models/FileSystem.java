@@ -6,6 +6,8 @@
 
 package com.file.explorer.models;
 
+import com.file.explorer.enumerations.FileSystemType;
+
 
 /**
  * 
@@ -15,6 +17,7 @@ public class FileSystem {
     
     private String name;
     private String path;
+    private FileSystemType fileSystemType;
 
     public FileSystem() {
     }
@@ -22,6 +25,12 @@ public class FileSystem {
     public FileSystem(String name, String path) {
         this.name = name;
         this.path = path;
+    }
+
+    public FileSystem(String name, String path, FileSystemType fileSystemType) {
+        this.name = name;
+        this.path = path;
+        this.fileSystemType = fileSystemType;
     }
 
     public String getName() {
@@ -38,6 +47,14 @@ public class FileSystem {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public FileSystemType getFileSystemType() {
+        return fileSystemType;
+    }
+
+    public void setFileSystemType(FileSystemType fileSystemType) {
+        this.fileSystemType = fileSystemType;
     }
 
     @Override

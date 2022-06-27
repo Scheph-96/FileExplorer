@@ -9,9 +9,13 @@ package com.file.explorer.enumerations;
  *
  * @author The_Me
  */
-public enum FileType {
+public enum FileSystemType {
     
     File,
-    Folder
+    Folder,
+    SystemDrive,
+    SeveralDrive,
+    CD_ROM,
+    UsbDrive
     
 }

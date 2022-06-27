@@ -5,7 +5,7 @@
  */
 package com.file.explorer.services;
 
-import com.file.explorer.enumerations.FileType;
+import com.file.explorer.enumerations.FileSystemType;
 import com.file.explorer.models.Partition;
 import com.file.explorer.models.SubFile;
 import java.io.File;
@@ -33,22 +33,11 @@ public class DeviceFilesLoader {
         roots = File.listRoots();
 
         for (File root : roots) {
-
-            try {
-                for (File file : root.listFiles()) {
-                    subFiles.add(new SubFile(file.isFile() ? FileType.File : FileType.Folder,
-                            Files.size(Paths.get(file.getPath())),
-                            file.lastModified(), file.getName(),
-                            file.getAbsolutePath()));
-                }
-            } catch (NullPointerException e) {
-                System.out.println("The NullPointer message: " + e.getMessage());
-            }
-
             partitions.add(new Partition(fsv.getSystemTypeDescription(root),
                     root.getTotalSpace(),
                     root.getFreeSpace(),
-                    subFiles,
+                    obtainType(partitionName(fsv.getSystemDisplayName(root), root, fsv)),
+                    children(root.getAbsolutePath(), true),
                     partitionName(fsv.getSystemDisplayName(root), root, fsv),
                     root.getAbsolutePath()));
             subFiles.clear();
@@ -60,26 +49,71 @@ public class DeviceFilesLoader {
     public static List<SubFile> children(String path, Boolean isTreeSection) throws IOException {
         File file = new File(path);
         ArrayList<SubFile> children = new ArrayList();
-        
-        if (isTreeSection) {
-            for (File child : file.listFiles()) {
-                if (child.isDirectory()) {
-                    children.add(new SubFile(FileType.Folder,
+
+        try {
+            if (isTreeSection) {
+                children.clear();
+                for (File child : file.listFiles()) {
+                    if (child.isDirectory() && !child.isHidden()) {
+                        children.add(new SubFile(FileSystemType.Folder,
+                                Files.size(Paths.get(child.getPath())),
+                                child.lastModified(), child.getName(),
+                                child.getAbsolutePath()));
+                    }
+                }
+            } else {
+                children.clear();
+                for (File child : file.listFiles()) {
+                    children.add(new SubFile(FileSystemType.Folder,
                             Files.size(Paths.get(child.getPath())),
                             child.lastModified(), child.getName(),
                             child.getAbsolutePath()));
                 }
             }
-        } else {
-            for (File child : file.listFiles()) {
-                children.add(new SubFile(FileType.Folder,
-                        Files.size(Paths.get(child.getPath())),
-                        child.lastModified(), child.getName(),
-                        child.getAbsolutePath()));
+        } catch (NullPointerException e) {
+
+        }
+        return children;
+    }
+    
+    public static String fileImage(Partition partition, Boolean isTree){
+        String image = null;
+        if(isTree){
+        switch (partition.getFileSystemType()) {
+                case SystemDrive:
+                    image = "/com/file/explorer/images/treeview/drive_windows.png";
+                    break;
+                case SeveralDrive:
+                    image = "/com/file/explorer/images/treeview/drive_harddrive.png";
+                    break;
+                case CD_ROM:
+                    image = "/com/file/explorer/images/treeview/drive_dvdrom.png";
+                    break;
+                case UsbDrive:
+                    image = "/com/file/explorer/images/treeview/drive_usb_removable.png";
+                    break;
+                default:
+                    break;
+            }
+        }else{
+        switch (partition.getFileSystemType()) {
+                case SystemDrive:
+                    image = "/com/file/explorer/images/files/drive_windows.png";
+                    break;
+                case SeveralDrive:
+                    image = "/com/file/explorer/images/files/drive_harddrive.png";
+                    break;
+                case CD_ROM:
+                    image = "/com/file/explorer/images/files/drive_dvdrom.png";
+                    break;
+                case UsbDrive:
+                    image = "/com/file/explorer/images/files/drive_usb_removable.png";
+                    break;
+                default:
+                    break;
             }
         }
-        
-        return children;
+        return image;
     }
 
     private static String partitionName(String name, File root, FileSystemView fsv) {
@@ -90,4 +124,15 @@ public class DeviceFilesLoader {
         return name;
     }
 
+    private static FileSystemType obtainType(String driveName) {
+
+        if (driveName.contains(System.getenv("SystemDrive"))) {
+            return FileSystemType.SystemDrive;
+        } else if (driveName.contains("CD") || driveName.contains("DVD")) {
+            return FileSystemType.CD_ROM;
+        } else {
+            return FileSystemType.SeveralDrive;
+        }
+
+    }
 }

@@ -3,68 +3,118 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.file.explorer.services;
 
-import com.file.explorer.controllers.FoldersTreeViewController;
 import com.file.explorer.models.SubFile;
 import com.file.explorer.models.TreeItemCustomObject;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
- * 
+ *
  * @author The_Me
  */
-public class FileExplorerTreeItem extends TreeItem{
+public class FileExplorerTreeItem extends TreeItem {
 
     public FileExplorerTreeItem() {
     }
 
-    public FileExplorerTreeItem(Object value) {
-        super(value);
-    }
-
-    public FileExplorerTreeItem(Object value, Node graphic) {
+    public FileExplorerTreeItem(TreeItemCustomObject value, Node graphic) {
         super(value, graphic);
+        FileExplorerTreeItem placeholder = new FileExplorerTreeItem();
+        this.getChildren().add(placeholder);
+
+        FileExplorerTreeItem fileExplorerTreeItem = this;
+
+        this.addEventHandler(TreeItem.branchExpandedEvent(), new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                System.out.println("The SubFile: " + value.getSubFile().getName());
+                if (value.getSubFile() != null) {
+                    fileExplorerTreeItem.setGraphic(new ImageView(new Image("/com/file/explorer/images/treeview/tree_folder_expanded.png")));
+                }
+                fileExplorerTreeItem.getChildren().clear();
+                try {
+                    List<SubFile> subFiles = DeviceFilesLoader.children(value.getPartition() != null ? value.getPartition().getPath() : value.getSubFile().getPath(), Boolean.TRUE);
+
+                    subFiles.forEach((subFile) -> {
+                        System.out.println("In for loop: " + subFile.getName());
+                        fileExplorerTreeItem.getChildren().add(new FileExplorerTreeItem(new TreeItemCustomObject(subFile), new ImageView(new Image("/com/file/explorer/images/tree_folder_collapse.png"))));
+                    });
+
+                } catch (IOException ex) {
+                    Logger.getLogger(FileExplorerTreeItem.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        });
+
+        this.addEventHandler(TreeItem.branchCollapsedEvent(), new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                fileExplorerTreeItem.setGraphic(new ImageView(new Image("/com/file/explorer/images/treeview/tree_folder_collapse.png")));
+            }
+
+        });
     }
 
-    @Override
-    public void addEventHandler(EventType eventType, EventHandler eventHandler) {
-        super.addEventHandler(eventType, eventHandler); //To change body of generated methods, choose Tools | Templates.
-        
-    }
+    public FileExplorerTreeItem(TreeItemCustomObject value) {
+        super(value);
+        FileExplorerTreeItem placeholder = new FileExplorerTreeItem();
+                    this.setGraphic(new ImageView(new Image(DeviceFilesLoader.fileImage(value.getPartition(), Boolean.TRUE))));
+//        if (value.getPartition() != null) {
+//
+//            switch (value.getPartition().getFileSystemType()) {
+//                case SystemDrive:
+//                    this.setGraphic(new ImageView(new Image("/com/file/explorer/images/treeview/drive_windows.png")));
+//                    break;
+//                case SeveralDrive:
+//                    this.setGraphic(new ImageView(new Image("/com/file/explorer/images/treeview/drive_harddrive.png")));
+//                    break;
+//                case CD_ROM:
+//                    this.setGraphic(new ImageView(new Image("/com/file/explorer/images/treeview/drive_dvdrom.png")));
+//                    break;
+//                case UsbDrive:
+//                    this.setGraphic(new ImageView(new Image("/com/file/explorer/images/treeview/drive_usb_removable.png")));
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
 
-    @Override
-    public ObservableList getChildren() {
-        return super.getChildren(); //To change body of generated methods, choose Tools | Templates.
+        this.getChildren().add(placeholder);
+        FileExplorerTreeItem fileExplorerTreeItem = this;
+
+        this.addEventHandler(TreeItem.branchExpandedEvent(), new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                if (value.getSubFile() != null) {
+                    fileExplorerTreeItem.setGraphic(new ImageView(new Image("/com/file/explorer/images/treeview/tree_folder_expanded.png")));
+                }
+                fileExplorerTreeItem.getChildren().remove(placeholder);
+                fileExplorerTreeItem.removeEventHandler(TreeItem.branchExpandedEvent(), this);
+                try {
+                    List<SubFile> subFiles = DeviceFilesLoader.children(value.getPartition() != null ? value.getPartition().getPath() : value.getSubFile().getPath(), Boolean.TRUE);
+
+                    subFiles.forEach((subFile) -> {
+                        System.out.println("In for loop: " + subFile.getName());
+                        fileExplorerTreeItem.getChildren().add(new FileExplorerTreeItem(new TreeItemCustomObject(subFile), new ImageView(new Image("/com/file/explorer/images/tree_folder_collapse.png"))));
+                    });
+
+                } catch (IOException ex) {
+                    Logger.getLogger(FileExplorerTreeItem.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        });
     }
-    
-    public void customExpandedProperty(){
-        this.expandedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                    BooleanProperty bb = (BooleanProperty) observable;
-                    System.out.println("bb.getBeans() = " + bb.getBean());
-                    TreeItem<TreeItemCustomObject> item = (TreeItem) bb.getBean();
-                    
-                    try {
-                        for(SubFile subFile : DeviceFilesLoader.children(item.getValue().getPartition().getPath(), true)){
-                            
-                        }
-//                        System.out.println(item.getValue().getPartition().getName());
-                    } catch (IOException ex) {
-                        Logger.getLogger(FoldersTreeViewController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
-    }
-    
-    
 
 }

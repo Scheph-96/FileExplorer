@@ -19,12 +19,39 @@ TextField{
     -fx-text-fill: #d1d1d1;
 }
 
+/*TreeView{
+    
+    -fx-padding: 20
+}*/
 
 TreeItem{
     -fx-background-color: #0b0909;
 }
 
 
-/*.tree-cell{
+.tree-cell{
     -fx-background-color: #0b0909;
-}*/
+    -fx-text-fill: #d1d1d1;
+    -fx-font: normal normal 18px '';
+}
+
+TreeView:horizontal,
+TreeView:horizontal *.increment-button,
+TreeView:horizontal *.decrement-button,
+TreeView:horizontal *.increment-arrow, 
+TreeView:horizontal *.decrement-arrow {
+    -fx-padding: 0;
+}
+
+Pane{
+    -fx-background-color: #4c4c4c;
+}
+
+Pane:hover{
+    -fx-background-color: #595959;
+}
+
+.driveLabel{
+    -fx-text-fill: #d1d1d1;
+    -fx-font: normal normal 18px '';
+}

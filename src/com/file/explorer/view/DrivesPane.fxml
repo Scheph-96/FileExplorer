@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<Pane prefHeight="130.0" prefWidth="395.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="130.0" prefWidth="395.0" spacing="10.0">
+         <children>
+            <ImageView fx:id="partitionIcon" fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" />
+            <VBox alignment="CENTER_LEFT" prefHeight="115.0" prefWidth="260.0" spacing="20.0">
+               <children>
+                  <Label fx:id="partitionName" styleClass="driveLabel" text="Label" />
+                  <ProgressBar fx:id="paritionSizeProgress" prefHeight="24.0" prefWidth="267.0" progress="0.31" />
+                  <Label fx:id="partitionSize" styleClass="driveLabel" text="Label" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+         </padding>
+      </HBox>
+   </children>
+</Pane>

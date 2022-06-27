@@ -3,8 +3,8 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="foldersTreeViewAnchorPane" prefHeight="680.0" prefWidth="220.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.explorer.controllers.FoldersTreeViewController">
+<AnchorPane fx:id="foldersTreeViewAnchorPane" prefHeight="625.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.explorer.controllers.FoldersTreeViewController">
    <children>
-      <TreeView fx:id="foldersTreeView" prefHeight="680.0" prefWidth="220.0" style="-fx-background-color: transparent;" />
+      <TreeView fx:id="foldersTreeView" fixedCellSize="0.0" prefHeight="625.0" style="-fx-background-color: transparent;" />
    </children>
 </AnchorPane>

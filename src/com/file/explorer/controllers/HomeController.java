@@ -31,11 +31,14 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            pane = FxmlLoader.page("ExplorerTopSection");
+            pane = (AnchorPane) FxmlLoader.page("ExplorerTopSection");
             borderPane.setTop(pane);
             
-            pane = FxmlLoader.page("FoldersTreeView");
+            pane = (AnchorPane) FxmlLoader.page("FoldersTreeView");
             borderPane.setLeft(pane);
+            
+            pane = (AnchorPane) FxmlLoader.page("ContentDisplayer");
+            borderPane.setCenter(pane);
             
         } catch (IOException ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
