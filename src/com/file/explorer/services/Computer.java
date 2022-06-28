@@ -5,7 +5,12 @@
  */
 package com.file.explorer.services;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.text.DecimalFormat;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import me.marnic.jiconextract2.JIconExtract;
 
 /**
  *
@@ -28,13 +33,22 @@ public class Computer {
         } else {
             convertSize = df.format(size_kb) + " KB";
         }
-        
+
         return convertSize;
 
     }
-    
-    public static String hddSize(String freeSpace, String totalSpace){
-        return freeSpace+" available on "+totalSpace;
+
+    public static String hddSize(String freeSpace, String totalSpace) {
+        return freeSpace + " available on " + totalSpace;
+    }
+
+    public static Image loadNativeIcon(String path) {
+
+        BufferedImage bufferedImage = JIconExtract.getIconForFile(96, 96, path);
+
+        Image fxImage = SwingFXUtils.toFXImage(bufferedImage, null);
+
+        return fxImage;
     }
 
 }

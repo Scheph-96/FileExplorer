@@ -10,6 +10,8 @@ import com.file.explorer.models.FileSystem;
 import com.file.explorer.models.SubFile;
 import com.file.explorer.services.Computer;
 import com.file.explorer.services.DeviceFilesLoader;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,7 +22,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,22 +38,16 @@ import javafx.scene.layout.VBox;
  *
  * @author The_Me
  */
-public class DrivesPaneController implements Initializable {
+public class FilesPaneController implements Initializable {
 
     @FXML
-    private Pane drivePane;
+    ImageView fileIcon;
 
     @FXML
-    private ImageView partitionIcon;
+    Label fileName;
 
     @FXML
-    private Label partitionName;
-
-    @FXML
-    private ProgressBar paritionSizeProgress;
-
-    @FXML
-    private Label partitionSize;
+    Pane filePane;
 
     private FileSystem fileSystem;
 
@@ -65,19 +60,21 @@ public class DrivesPaneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         EventHandler<MouseEvent> mouseEventHandler = (MouseEvent event) -> {
+            System.out.println("The parent: " + filePane.getParent().getParent().getParent().getParent().getParent().getParent());
 
             if (event.getClickCount() == 2) {
                 try {
-                    BorderPane bPane = (BorderPane) drivePane.getParent().getParent().getParent().getParent().getParent().getParent();
-                    AnchorPane anchPane = (AnchorPane) bPane.getTop();
-                    HBox hbox = (HBox) anchPane.getChildren().get(0);
-                    TextField pathDisplayer = (TextField) hbox.getChildren().get(1);
-                    pathDisplayer.setText(fileSystem.getPath());
-                    DeviceFilesLoader.pathHistory.add(pathDisplayer.getText());
-                    TilePane contentDisplayer = (TilePane) drivePane.getParent();
+                    if (fileSystem.getFileSystemType() == FileSystemType.Folder) {
+                        BorderPane bPane = (BorderPane) filePane.getParent().getParent().getParent().getParent().getParent().getParent();
+                        AnchorPane anchPane = (AnchorPane) bPane.getTop();
+                        HBox hbox = (HBox) anchPane.getChildren().get(0);
+                        TextField pathDisplayer = (TextField) hbox.getChildren().get(1);
+                        pathDisplayer.setText(fileSystem.getPath());
+                        DeviceFilesLoader.pathHistory.add(pathDisplayer.getText());
+                        TilePane contentDisplayer = (TilePane) filePane.getParent();
 
-                    contentDisplayer.getChildren().clear();
-                    if (fileSystem.getFileSystemType() != FileSystemType.CD_ROM) {
+                        contentDisplayer.getChildren().clear();
+
                         for (SubFile subFile : DeviceFilesLoader.children(fileSystem.getPath(), Boolean.FALSE)) {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/file/explorer/view/FilesPane.fxml"));
                             Pane filesPane = loader.load();
@@ -86,17 +83,20 @@ public class DrivesPaneController implements Initializable {
                             VBox vbox = (VBox) filesPane.getChildren().get(0);
 
                             if (subFile.getFileSystemType() == FileSystemType.Folder) {
-                                ImageView fileIcon = (ImageView) vbox.getChildren().get(0);
-                                fileIcon.setImage(new Image(DeviceFilesLoader.fileImage(subFile, Boolean.FALSE)));
+                                ImageView fileicon = (ImageView) vbox.getChildren().get(0);
+                                fileicon.setImage(new Image(DeviceFilesLoader.fileImage(subFile, Boolean.FALSE)));
                             } else if (subFile.getFileSystemType() == FileSystemType.File) {
-                                ImageView fileIcon = (ImageView) vbox.getChildren().get(0);
-                                fileIcon.setImage(Computer.loadNativeIcon(subFile.getPath()));
+//                                System.out.println("In DevicePaneController: Is File");
+                                ImageView fileicon = (ImageView) vbox.getChildren().get(0);
+                                fileicon.setImage(Computer.loadNativeIcon(subFile.getPath()));
                             }
-                            Label fileName = (Label) vbox.getChildren().get(1);
-                            fileName.setText(subFile.getName());
+                            Label filename = (Label) vbox.getChildren().get(1);
+                            filename.setText(subFile.getName());
                             contentDisplayer.getChildren().add(filesPane);
 
                         }
+                    } else {
+                        Desktop.getDesktop().open(new File(fileSystem.getPath()));
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(DrivesPaneController.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,7 +104,7 @@ public class DrivesPaneController implements Initializable {
             }
         };
 
-        drivePane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventHandler);
+        filePane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventHandler);
     }
 
     public FileSystem getFileSystem() {

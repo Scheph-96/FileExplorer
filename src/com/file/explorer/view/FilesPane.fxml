@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<Pane fx:id="filePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="128.0" prefWidth="128.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.explorer.controllers.FilesPaneController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="126.0" prefWidth="128.0" spacing="3.0">
+         <children>
+            <ImageView fx:id="fileIcon" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="fileName" style="-fx-text-fill: #d1d1d1; -fx-font: normal normal 15px '';" styleClass="fileLabel" text="Label" />
+         </children>
+         <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </padding>
+      </VBox>
+   </children>
+</Pane>

@@ -21,7 +21,6 @@ import java.util.logging.Logger;
  */
 public class SubFile extends FileSystem {
 
-    private FileSystemType type;
     private Long size;
     private Long lastModified;
     private List<SubFile> subFiles;
@@ -30,10 +29,21 @@ public class SubFile extends FileSystem {
         super();
     }
 
-    public SubFile(FileSystemType type, Long size, Long lastModified, String name, String path) {
-        super(name, path);
-        this.type = type;
+//    public SubFile(FileSystemType type, Long size, Long lastModified, String name, String path) {
+//        super(name, path);
+//        this.type = type;
+//        this.size = size;
+//        this.lastModified = lastModified;
+//    }
+
+    public SubFile(Long size, Long lastModified, String name, String path, FileSystemType fileSystemType) {
+        super(name, path, fileSystemType);
         this.size = size;
+        this.lastModified = lastModified;
+    }
+
+    public SubFile(Long lastModified, String name, String path, FileSystemType fileSystemType) {
+        super(name, path, fileSystemType);
         this.lastModified = lastModified;
     }
     
@@ -64,24 +74,16 @@ public class SubFile extends FileSystem {
 //    }
 
     
-
-    public SubFile(FileSystemType type, Long size, Long lastModified, List<SubFile> subFiles, String name, String path) {
-        super(name, path);
-        this.type = type;
-        this.size = size;
-        this.lastModified = lastModified;
-        this.subFiles = subFiles;
-    }
+//
+//    public SubFile(FileSystemType type, Long size, Long lastModified, List<SubFile> subFiles, String name, String path) {
+//        super(name, path);
+//        this.type = type;
+//        this.size = size;
+//        this.lastModified = lastModified;
+//        this.subFiles = subFiles;
+//    }
    
     
-
-    public FileSystemType getType() {
-        return type;
-    }
-
-    public void setType(FileSystemType type) {
-        this.type = type;
-    }
 
     public Long getSize() {
         return size;

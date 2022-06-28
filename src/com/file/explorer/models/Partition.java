@@ -38,13 +38,13 @@ public class Partition extends FileSystem{
         this.subFiles = subFiles;
     }
 
-    public Partition(String description, long totalSpace, long freeSpace, List<SubFile> subFiles, String name, String path) {
-        super(name, path);
-        this.description = description;
-        this.totalSpace = totalSpace;
-        this.freeSpace = freeSpace;
-        this.subFiles = subFiles;
-    }
+//    public Partition(String description, long totalSpace, long freeSpace, List<SubFile> subFiles, String name, String path) {
+//        super(name, path);
+//        this.description = description;
+//        this.totalSpace = totalSpace;
+//        this.freeSpace = freeSpace;
+//        this.subFiles = subFiles;
+//    }
 
     public String getDescription() {
         return description;

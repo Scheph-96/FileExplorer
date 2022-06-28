@@ -6,6 +6,7 @@
 package com.file.explorer.services;
 
 import com.file.explorer.enumerations.FileSystemType;
+import com.file.explorer.models.FileSystem;
 import com.file.explorer.models.Partition;
 import com.file.explorer.models.SubFile;
 import java.io.File;
@@ -22,6 +23,8 @@ import javax.swing.filechooser.FileSystemView;
  * @author The_Me
  */
 public class DeviceFilesLoader {
+    
+    public static ArrayList<String> pathHistory = new ArrayList(5); 
 
     public static List<Partition> rootPath() throws IOException {
         File[] roots;
@@ -51,23 +54,30 @@ public class DeviceFilesLoader {
         ArrayList<SubFile> children = new ArrayList();
 
         try {
-            if (isTreeSection) {
+            if (isTreeSection == true) {
                 children.clear();
                 for (File child : file.listFiles()) {
                     if (child.isDirectory() && !child.isHidden()) {
-                        children.add(new SubFile(FileSystemType.Folder,
-                                Files.size(Paths.get(child.getPath())),
+                        children.add(new SubFile(
                                 child.lastModified(), child.getName(),
-                                child.getAbsolutePath()));
+                                child.getAbsolutePath(),
+                                FileSystemType.Folder));
                     }
                 }
             } else {
                 children.clear();
                 for (File child : file.listFiles()) {
-                    children.add(new SubFile(FileSystemType.Folder,
-                            Files.size(Paths.get(child.getPath())),
-                            child.lastModified(), child.getName(),
-                            child.getAbsolutePath()));
+                    if (child.isDirectory() && !child.isHidden()) {
+                        children.add(new SubFile(
+                                child.lastModified(), child.getName(),
+                                child.getAbsolutePath(), FileSystemType.Folder));
+                    } else if (child.isFile()&& !child.isHidden()){
+                        System.out.println("Ine DeviceLoader: Is File");
+                        children.add(new SubFile(
+                                Files.size(Paths.get(child.getPath())),
+                                child.lastModified(), child.getName(),
+                                child.getAbsolutePath(), FileSystemType.File));
+                    }
                 }
             }
         } catch (NullPointerException e) {
@@ -75,11 +85,11 @@ public class DeviceFilesLoader {
         }
         return children;
     }
-    
-    public static String fileImage(Partition partition, Boolean isTree){
+
+    public static String fileImage(FileSystem fileSystem, Boolean isTree) {
         String image = null;
-        if(isTree){
-        switch (partition.getFileSystemType()) {
+        if (isTree) {
+            switch (fileSystem.getFileSystemType()) {
                 case SystemDrive:
                     image = "/com/file/explorer/images/treeview/drive_windows.png";
                     break;
@@ -95,8 +105,8 @@ public class DeviceFilesLoader {
                 default:
                     break;
             }
-        }else{
-        switch (partition.getFileSystemType()) {
+        } else {
+            switch (fileSystem.getFileSystemType()) {
                 case SystemDrive:
                     image = "/com/file/explorer/images/files/drive_windows.png";
                     break;
@@ -109,13 +119,16 @@ public class DeviceFilesLoader {
                 case UsbDrive:
                     image = "/com/file/explorer/images/files/drive_usb_removable.png";
                     break;
+                case Folder:
+                    image = "/com/file/explorer/images/files/folder_live.png";
+                    break;
                 default:
                     break;
             }
         }
         return image;
     }
-
+    
     private static String partitionName(String name, File root, FileSystemView fsv) {
         if (name.isEmpty()) {
             name = fsv.getSystemTypeDescription(root) + " (" + root.toString().split(Pattern.quote("\\"))[0] + ") ";

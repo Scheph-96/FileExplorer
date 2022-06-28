@@ -37,7 +37,7 @@ public class FileExplorerTreeItem extends TreeItem {
         this.addEventHandler(TreeItem.branchExpandedEvent(), new EventHandler() {
             @Override
             public void handle(Event event) {
-                System.out.println("The SubFile: " + value.getSubFile().getName());
+//                System.out.println("The SubFile: " + value.getSubFile().getName());
                 if (value.getSubFile() != null) {
                     fileExplorerTreeItem.setGraphic(new ImageView(new Image("/com/file/explorer/images/treeview/tree_folder_expanded.png")));
                 }
@@ -46,8 +46,8 @@ public class FileExplorerTreeItem extends TreeItem {
                     List<SubFile> subFiles = DeviceFilesLoader.children(value.getPartition() != null ? value.getPartition().getPath() : value.getSubFile().getPath(), Boolean.TRUE);
 
                     subFiles.forEach((subFile) -> {
-                        System.out.println("In for loop: " + subFile.getName());
-                        fileExplorerTreeItem.getChildren().add(new FileExplorerTreeItem(new TreeItemCustomObject(subFile), new ImageView(new Image("/com/file/explorer/images/tree_folder_collapse.png"))));
+//                        System.out.println("In for loop: " + subFile.getName());
+                        fileExplorerTreeItem.getChildren().add(new FileExplorerTreeItem(new TreeItemCustomObject(subFile), new ImageView(new Image("/com/file/explorer/images/treeview/tree_folder_collapse.png"))));
                     });
 
                 } catch (IOException ex) {
@@ -106,7 +106,7 @@ public class FileExplorerTreeItem extends TreeItem {
 
                     subFiles.forEach((subFile) -> {
                         System.out.println("In for loop: " + subFile.getName());
-                        fileExplorerTreeItem.getChildren().add(new FileExplorerTreeItem(new TreeItemCustomObject(subFile), new ImageView(new Image("/com/file/explorer/images/tree_folder_collapse.png"))));
+                        fileExplorerTreeItem.getChildren().add(new FileExplorerTreeItem(new TreeItemCustomObject(subFile), new ImageView(new Image("/com/file/explorer/images/treeview/tree_folder_collapse.png"))));
                     });
 
                 } catch (IOException ex) {

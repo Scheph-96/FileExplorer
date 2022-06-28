@@ -19,8 +19,7 @@ TextField{
     -fx-text-fill: #d1d1d1;
 }
 
-/*TreeView{
-    
+/*TreeView{    
     -fx-padding: 20
 }*/
 
@@ -43,9 +42,9 @@ TreeView:horizontal *.decrement-arrow {
     -fx-padding: 0;
 }
 
-Pane{
+/*Pane{
     -fx-background-color: #4c4c4c;
-}
+}*/
 
 Pane:hover{
     -fx-background-color: #595959;
@@ -54,4 +53,9 @@ Pane:hover{
 .driveLabel{
     -fx-text-fill: #d1d1d1;
     -fx-font: normal normal 18px '';
+}
+
+.fileLabel{
+    -fx-text-fill: #d1d1d1;
+    -fx-font: normal normal 15px '';
 }

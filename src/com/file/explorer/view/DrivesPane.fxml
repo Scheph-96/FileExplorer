@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<Pane prefHeight="130.0" prefWidth="395.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="drivePane" prefHeight="130.0" prefWidth="395.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.explorer.controllers.DrivesPaneController">
    <children>
       <HBox prefHeight="130.0" prefWidth="395.0" spacing="10.0">
          <children>
