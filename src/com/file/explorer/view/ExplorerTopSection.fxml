@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="48.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.explorer.controllers.ExplorerTopSectionController">
+<AnchorPane id="AnchorPane" fx:id="anchPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="48.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.file.explorer.controllers.ExplorerTopSectionController">
    <children>
       <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="1080.0" spacing="20.0" style="-fx-background-color: transparent;">
          <children>

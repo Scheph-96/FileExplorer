@@ -129,6 +129,13 @@ public class DeviceFilesLoader {
         return image;
     }
     
+    public static FileSystem getByPath(String path){
+        File file = new File(path);
+        
+       return  new FileSystem(file.getName(), file.getAbsolutePath(), FileSystemType.Folder);
+        
+    }
+    
     private static String partitionName(String name, File root, FileSystemView fsv) {
         if (name.isEmpty()) {
             name = fsv.getSystemTypeDescription(root) + " (" + root.toString().split(Pattern.quote("\\"))[0] + ") ";

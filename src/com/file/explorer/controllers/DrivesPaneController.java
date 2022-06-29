@@ -49,7 +49,7 @@ public class DrivesPaneController implements Initializable {
     private Label partitionName;
 
     @FXML
-    private ProgressBar paritionSizeProgress;
+    private ProgressBar partitionSizeProgress;
 
     @FXML
     private Label partitionSize;
@@ -73,7 +73,10 @@ public class DrivesPaneController implements Initializable {
                     HBox hbox = (HBox) anchPane.getChildren().get(0);
                     TextField pathDisplayer = (TextField) hbox.getChildren().get(1);
                     pathDisplayer.setText(fileSystem.getPath());
-                    DeviceFilesLoader.pathHistory.add(pathDisplayer.getText());
+                    if (DeviceFilesLoader.pathHistory.size() == 5) {
+                        DeviceFilesLoader.pathHistory.remove(0);
+                    }
+                        DeviceFilesLoader.pathHistory.add(pathDisplayer.getText());
                     TilePane contentDisplayer = (TilePane) drivePane.getParent();
 
                     contentDisplayer.getChildren().clear();

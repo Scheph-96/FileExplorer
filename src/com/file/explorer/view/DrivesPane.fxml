@@ -16,7 +16,7 @@
             <VBox alignment="CENTER_LEFT" prefHeight="115.0" prefWidth="260.0" spacing="20.0">
                <children>
                   <Label fx:id="partitionName" styleClass="driveLabel" text="Label" />
-                  <ProgressBar fx:id="paritionSizeProgress" prefHeight="24.0" prefWidth="267.0" progress="0.31" />
+                  <ProgressBar fx:id="partitionSizeProgress" prefHeight="24.0" prefWidth="267.0" progress="0.31" />
                   <Label fx:id="partitionSize" styleClass="driveLabel" text="Label" />
                </children>
                <padding>

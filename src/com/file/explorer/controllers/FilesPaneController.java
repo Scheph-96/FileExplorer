@@ -50,6 +50,7 @@ public class FilesPaneController implements Initializable {
     Pane filePane;
 
     private FileSystem fileSystem;
+    private String currentPath;
 
     /**
      * Initializes the controller class.
@@ -60,8 +61,6 @@ public class FilesPaneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         EventHandler<MouseEvent> mouseEventHandler = (MouseEvent event) -> {
-            System.out.println("The parent: " + filePane.getParent().getParent().getParent().getParent().getParent().getParent());
-
             if (event.getClickCount() == 2) {
                 try {
                     if (fileSystem.getFileSystemType() == FileSystemType.Folder) {
@@ -70,6 +69,9 @@ public class FilesPaneController implements Initializable {
                         HBox hbox = (HBox) anchPane.getChildren().get(0);
                         TextField pathDisplayer = (TextField) hbox.getChildren().get(1);
                         pathDisplayer.setText(fileSystem.getPath());
+                    if (DeviceFilesLoader.pathHistory.size() == 5) {
+                        DeviceFilesLoader.pathHistory.remove(0);
+                    }
                         DeviceFilesLoader.pathHistory.add(pathDisplayer.getText());
                         TilePane contentDisplayer = (TilePane) filePane.getParent();
 
@@ -106,6 +108,50 @@ public class FilesPaneController implements Initializable {
 
         filePane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventHandler);
     }
+    
+    public void reloadPath(String path){
+        try {
+                    if (fileSystem.getFileSystemType() == FileSystemType.Folder) {
+                        BorderPane bPane = (BorderPane) filePane.getParent().getParent().getParent().getParent().getParent().getParent();
+                        AnchorPane anchPane = (AnchorPane) bPane.getTop();
+                        HBox hbox = (HBox) anchPane.getChildren().get(0);
+                        TextField pathDisplayer = (TextField) hbox.getChildren().get(1);
+                        pathDisplayer.setText(fileSystem.getPath());
+                    if (DeviceFilesLoader.pathHistory.size() == 5) {
+                        DeviceFilesLoader.pathHistory.remove(0);
+                    }
+                        DeviceFilesLoader.pathHistory.add(pathDisplayer.getText());
+                        TilePane contentDisplayer = (TilePane) filePane.getParent();
+
+                        contentDisplayer.getChildren().clear();
+
+                        for (SubFile subFile : DeviceFilesLoader.children(currentPath, Boolean.FALSE)) {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/file/explorer/view/FilesPane.fxml"));
+                            Pane filesPane = loader.load();
+                            FilesPaneController filesPaneController = loader.getController();
+                            filesPaneController.setFileSystem(subFile);
+                            VBox vbox = (VBox) filesPane.getChildren().get(0);
+
+                            if (subFile.getFileSystemType() == FileSystemType.Folder) {
+                                ImageView fileicon = (ImageView) vbox.getChildren().get(0);
+                                fileicon.setImage(new Image(DeviceFilesLoader.fileImage(subFile, Boolean.FALSE)));
+                            } else if (subFile.getFileSystemType() == FileSystemType.File) {
+//                                System.out.println("In DevicePaneController: Is File");
+                                ImageView fileicon = (ImageView) vbox.getChildren().get(0);
+                                fileicon.setImage(Computer.loadNativeIcon(subFile.getPath()));
+                            }
+                            Label filename = (Label) vbox.getChildren().get(1);
+                            filename.setText(subFile.getName());
+                            contentDisplayer.getChildren().add(filesPane);
+
+                        }
+                    } else {
+                        Desktop.getDesktop().open(new File(fileSystem.getPath()));
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(DrivesPaneController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    }
 
     public FileSystem getFileSystem() {
         return fileSystem;
@@ -113,6 +159,14 @@ public class FilesPaneController implements Initializable {
 
     public void setFileSystem(FileSystem fileSystem) {
         this.fileSystem = fileSystem;
+    }
+
+    public String getCurrentPath() {
+        return currentPath;
+    }
+
+    public void setCurrentPath(String currentPath) {
+        this.currentPath = currentPath;
     }
 
 }

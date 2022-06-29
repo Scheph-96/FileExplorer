@@ -6,7 +6,6 @@
 package com.file.explorer.services;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.text.DecimalFormat;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -18,20 +17,21 @@ import me.marnic.jiconextract2.JIconExtract;
  */
 public class Computer {
 
+    private static final DecimalFormat DF = new DecimalFormat("0.00");
+
     public static String convertBytes(Long size_bytes) {
         String convertSize;
-        final DecimalFormat df = new DecimalFormat("0.00");
 
         double size_kb = size_bytes / 1024;
         double size_mb = size_kb / 1024;
         double size_gb = size_mb / 1024;
 
         if (size_gb > 0) {
-            convertSize = df.format(size_gb) + " GB";
+            convertSize = DF.format(size_gb) + " GB";
         } else if (size_mb > 0) {
-            convertSize = df.format(size_mb) + " MB";
+            convertSize = DF.format(size_mb) + " MB";
         } else {
-            convertSize = df.format(size_kb) + " KB";
+            convertSize = DF.format(size_kb) + " KB";
         }
 
         return convertSize;
@@ -49,6 +49,16 @@ public class Computer {
         Image fxImage = SwingFXUtils.toFXImage(bufferedImage, null);
 
         return fxImage;
+    }
+
+    public static double hddPercentage(Long freeSpace, Long totalSpace) {
+//        System.out.println("TotalSpace: "+totalSpace);
+//        System.out.println("FreeSpace: "+freeSpace);
+//        System.out.println("Brut percentage: "+((totalSpace - (totalSpace - freeSpace)) / totalSpace) * 100);
+        double occupied= totalSpace - freeSpace;
+        double percentage = ((totalSpace - occupied) / totalSpace) ;
+//        System.out.println("The percentage: "+percentage);
+        return percentage;
     }
 
 }
